@@ -242,8 +242,8 @@ function eraseAt(p){
     corner.worn += 0.05;
     if(corner.worn > 20) corner.worn = 20;
     if(!corner.black){
-      corner.blackProg += 0.1 + (a.variant==='super'?0.15:0);
-      if(corner.blackProg > 10){ corner.black = true; corner.blackProg=0; }
+      corner.blackProg += 0.02 + (a.variant==='super'?0.03:0) + (a.variant==='hard'?0.04:0);
+      if(corner.blackProg > 10 && Math.random() < 0.05){ corner.black = true; corner.blackProg=0; }
     }
   }
   a.length -= 0.02;
@@ -262,8 +262,8 @@ function eraseAt(p){
   }
   // generate crumb
   crumbCounter++;
-  if(crumbCounter % 8 === 0){
-    crumbs.push({ id: 'c'+Date.now()+Math.random(), x: p.x+Math.random()*10-5, y: p.y+Math.random()*10-5, size: 8+Math.random()*6 });
+  if(crumbCounter % 28 === 0){
+    crumbs.push({ id: 'c'+Date.now()+Math.random(), x: p.x+Math.random()*6-3, y: p.y+Math.random()*6-3, size: 5+Math.random()*4 });
     state.crumbs = crumbs;
     renderCrumbs();
   }
