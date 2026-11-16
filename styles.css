@@ -3,6 +3,7 @@ body { margin:0; font-family: "Segoe UI", "Yu Gothic", sans-serif; background:#2
 .topbar { display:flex; gap:12px; align-items:center; padding:8px 12px; background:#1f1f1f; flex-wrap:wrap; }
 .topbar h1 { margin:0; font-size:18px; }
 .money, .paper-info { background:#333; padding:4px 8px; border-radius:4px; }
+.message { background:#1a3a1a; padding:4px 8px; border-radius:4px; min-width:200px; color:#9f9; }
 button { cursor:pointer; padding:6px 10px; border:1px solid #555; background:#3a3a3a; color:#eee; border-radius:4px; }
 button:hover { background:#4a4a4a; }
 button.active { background:#2a6; border-color:#4c8; }

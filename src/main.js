@@ -9,6 +9,7 @@ let crumbs = state.crumbs;
 let crumbCounter = 0;
 
 function $(id){ return document.getElementById(id); }
+function setMessage(msg){ const el=$('message'); if(el){ el.textContent = msg; } }
 
 function paperEl(){ return document.getElementById('paper'); }
 
@@ -23,10 +24,37 @@ function colorOf(name){ const m={red:'#e53935',blue:'#1e88e5',yellow:'#fdd835',g
 function colorOfBp(name){ const m={red:'#d32f2f',blue:'#1976d2',orange:'#f57c00',green:'#388e3c',black:'#212121'}; return m[name]||'#212121'; }
 function colorOfPaint(name){ const m={red:'#e53935',blue:'#1e88e5',yellow:'#fdd835',white:'#ffffff'}; return m[name]||'#222'; }
 
+function stockForTool(kind){
+  if(kind==='pencil') return state.inventory.pencil.HB>0 || state.inventory.pencil.H>0 || state.inventory.pencil.B>0 || state.inventory.pencil['2B']>0;
+  if(kind==='mech') return state.inventory.mech>0;
+  if(kind==='eraserNormal') return state.inventory.eraser.normal>0;
+  if(kind==='eraserHard') return state.inventory.eraser.hard>0;
+  if(kind==='eraserSuper') return state.inventory.eraser.super>0;
+  if(kind==='eraserColor') return state.inventory.eraser.color>0;
+  if(kind==='eraserPen') return state.inventory.eraser.pen>0 || state.inventory.unlocked.penEraser;
+  if(kind==='eraserElectric') return state.inventory.eraser.electric>0 || state.inventory.unlocked.electricEraser;
+  if(kind==='coloredPencil') return Object.values(state.inventory.coloredPencil).some(v=>v>0);
+  if(kind==='ballpoint') return Object.values(state.inventory.ballpoint).some(v=>v>0);
+  if(kind==='brush') return Object.values(state.inventory.brush).some(v=>v>0);
+  if(kind==='ruler') return state.inventory.ruler>0;
+  if(kind==='compass') return state.inventory.compass>0;
+  if(kind==='correctionTape') return state.inventory.correctionTape>0;
+  if(kind==='correctionFluid') return state.inventory.correctionFluid>0;
+  return true;
+}
+function updateToolButtons(){
+  document.querySelectorAll('.toolbar button[data-tool]').forEach(btn=>{
+    const ok = stockForTool(btn.dataset.tool);
+    btn.disabled = !ok;
+    btn.title = ok ? '' : '在庫なし（文房具屋で購入）';
+    btn.style.opacity = ok ? '1' : '0.4';
+  });
+}
 function updateSidepanel(){
   $('inventory').innerHTML = '<h3>所持品</h3><pre>'+inventorySummary()+'</pre>';
   $('status').innerHTML = '<h3>状態</h3><pre>'+statusText()+'</pre>';
   renderToolOptions();
+  updateToolButtons();
 }
 
 function statusText(){
@@ -88,48 +116,51 @@ function renderToolOptions(){
 
 function activateTool(kind){
   if(kind==='pencil'){
-    const h = 'HB';
-    if(!hasItem('pencil', h)){ alert('鉛筆がない。文房具屋で買う。'); return; }
+    let h = ['HB','H','B','2B'].find(x=>state.inventory.pencil[x]>0);
+    if(!h){ setMessage('鉛筆がない。文房具屋で買う。'); return; }
     consumeItem('pencil', h);
     state.active = { kind:'pencil', hardness:h, length:100, thickness:0.5, color:'#222' };
+    setMessage('鉛筆('+h+')を使用開始 (残り'+state.inventory.pencil[h]+'本)');
   } else if(kind==='mech'){
-    if(state.inventory.mech<=0){ alert('シャーペンがない。'); return; }
+    if(state.inventory.mech<=0){ setMessage('シャーペンがない。'); return; }
     state.active = { kind:'mech', hardness:'HB', leadLength:5, reservoir: state.inventory.refillLead.HB||0, color:'#222', knockCount:0 };
+    setMessage('シャーペンを使用開始');
   } else if(kind.startsWith('eraser')){
     const variant = kind==='eraserNormal'?'normal': kind==='eraserHard'?'hard': kind==='eraserSuper'?'super': kind==='eraserColor'?'color': kind==='eraserPen'?'pen': 'electric';
-    if(variant==='pen' && !state.inventory.unlocked.penEraser){ alert('ペン型消しゴムは未解放（100円）'); return; }
-    if(variant==='electric' && !state.inventory.unlocked.electricEraser){ alert('電動消しゴムは未解放（200円）'); return; }
-    if(!hasItem('eraser', variant)){ alert('消しゴムがない。'); return; }
+    if(variant==='pen' && !state.inventory.unlocked.penEraser){ setMessage('ペン型消しゴムは未解放（100円）'); return; }
+    if(variant==='electric' && !state.inventory.unlocked.electricEraser){ setMessage('電動消しゴムは未解放（200円）'); return; }
+    if(!hasItem('eraser', variant)){ setMessage('消しゴムがない。'); return; }
     consumeItem('eraser', variant);
     const corners = [0,1,2,3].map(()=>({worn:0, black:false, blackProg:0}));
     state.active = { kind:'eraser', variant, corner:0, corners, length:100 };
+    setMessage('消しゴム('+variant+')を使用開始');
   } else if(kind==='coloredPencil'){
     const c='red';
-    if(!hasItem('coloredPencil', c)){ alert('色鉛筆がない。'); return; }
+    if(!hasItem('coloredPencil', c)){ setMessage('色鉛筆がない。'); return; }
     consumeItem('coloredPencil', c);
     state.active = { kind:'coloredPencil', color:c, length:100, thickness:0.6 };
   } else if(kind==='ballpoint'){
     const c='black';
-    if(!hasItem('ballpoint', c)){ alert('ボールペンがない。'); return; }
+    if(!hasItem('ballpoint', c)){ setMessage('ボールペンがない。'); return; }
     consumeItem('ballpoint', c);
     state.active = { kind:'ballpoint', color:c, ink:100 };
   } else if(kind==='brush'){
     const s='thick';
-    if(!hasItem('brush', s)){ alert('筆がない。'); return; }
+    if(!hasItem('brush', s)){ setMessage('筆がない。'); return; }
     consumeItem('brush', s);
     state.active = { kind:'brush', size:s, paintColor:'red', paint:0, strokes:0 };
   } else if(kind==='ruler'){
-    if(state.inventory.ruler<=0){ alert('定規がない。'); return; }
+    if(state.inventory.ruler<=0){ setMessage('定規がない。'); return; }
     state.active = { kind:'ruler', start:null };
   } else if(kind==='compass'){
-    if(state.inventory.compass<=0){ alert('コンパスがない。'); return; }
+    if(state.inventory.compass<=0){ setMessage('コンパスがない。'); return; }
     state.active = { kind:'compass', center:null };
   } else if(kind==='correctionTape'){
-    if(state.inventory.correctionTape<=0){ alert('修正テープがない。'); return; }
+    if(state.inventory.correctionTape<=0){ setMessage('修正テープがない。'); return; }
     consumeItem('correctionTape');
     state.active = { kind:'correctionTape', remaining:100 };
   } else if(kind==='correctionFluid'){
-    if(state.inventory.correctionFluid<=0){ alert('修正液がない。'); return; }
+    if(state.inventory.correctionFluid<=0){ setMessage('修正液がない。'); return; }
     consumeItem('correctionFluid');
     state.active = { kind:'correctionFluid', remaining:100 };
   } else if(kind==='crumb'){
@@ -148,7 +179,7 @@ document.querySelectorAll('.toolbar button[data-tool]').forEach(btn=>{
 
 function sharpenPencil(){
   const a = state.active; if(!a||a.kind!=='pencil') return;
-  if(a.length < 5){ alert('短すぎて削れない'); return; }
+  if(a.length < 5){ setMessage('短すぎて削れない'); return; }
   a.length -= 5;
   a.thickness = 0.5;
   updateSidepanel();
@@ -161,13 +192,13 @@ function knockMech(){
     if(Math.random() < 0.4){
       a.leadLength = 0;
       a.knockCount = 0;
-      alert('芯が折れた！');
+      setMessage('芯が折れた！');
       updateSidepanel(); return;
     }
   }
   if(a.leadLength <= 0){
     if(a.reservoir>0){ a.reservoir--; a.leadLength = 5; }
-    else { alert('芯がない。交換必要。'); }
+    else { setMessage('芯がない。交換必要。'); }
   } else {
     a.leadLength = Math.min(10, a.leadLength + 2);
   }
@@ -176,16 +207,16 @@ function knockMech(){
 
 function refillMechLead(){
   const a = state.active; if(!a||a.kind!=='mech') return;
-  if(state.inventory.refillLead[a.hardness]<=0){ alert('替芯がない。文房具屋へ。'); return; }
+  if(state.inventory.refillLead[a.hardness]<=0){ setMessage('替芯がない。文房具屋へ。'); return; }
   state.inventory.refillLead[a.hardness]--;
   a.reservoir += 20;
-  alert('芯を交換した');
+  setMessage('芯を交換した');
   updateSidepanel();
 }
 
 function dipBrush(){
   const a = state.active; if(!a||a.kind!=='brush') return;
-  if(state.inventory.paint[a.paintColor]<=0){ alert('絵の具がない。'); return; }
+  if(state.inventory.paint[a.paintColor]<=0){ setMessage('絵の具がない。'); return; }
   state.inventory.paint[a.paintColor] = Math.max(0, state.inventory.paint[a.paintColor]-0.1);
   a.paint = 100;
   updateSidepanel();
@@ -194,7 +225,7 @@ function dipBrush(){
 function hardnessAlpha(h){ return h==='H'?0.4: h==='HB'?0.6: h==='B'?0.75: 0.9; }
 function hardnessWidthMul(h){ return h==='H'?0.8: h==='HB'?1: h==='B'?1.1: 1.2; }
 
-function pos(e){ const r = paperEl().getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+function pos(e){ const c = paperEl(); const r = c.getBoundingClientRect(); const sx = c.width / r.width; const sy = c.height / r.height; return { x: (e.clientX - r.left)*sx, y: (e.clientY - r.top)*sy }; }
 
 function eraseAt(p){
   const a = state.active;
@@ -216,18 +247,18 @@ function eraseAt(p){
     }
   }
   a.length -= 0.02;
-  if(a.length <= 0){ alert('消しゴムが使えなくなった'); state.active=null; state.currentTool=null; }
+  if(a.length <= 0){ setMessage('消しゴムが使えなくなった'); state.active=null; state.currentTool=null; }
   // break chance
   if((a.variant==='normal'||a.variant==='super') && Math.random() < 0.002){
     a.length /= 2;
-    alert('消しゴムが折れた！');
+    setMessage('消しゴムが折れた！');
   }
   if(corner.black){
     const ctx = C.getCtx();
     ctx.fillStyle='rgba(30,30,30,0.15)';
     ctx.beginPath(); ctx.arc(p.x,p.y,r,0,Math.PI*2); ctx.fill();
     corner.blackProg -= 0.2;
-    if(corner.blackProg <= -10){ corner.black=false; corner.blackProg=0; alert('黒消しゴム状態解除'); }
+    if(corner.blackProg <= -10){ corner.black=false; corner.blackProg=0; setMessage('黒消しゴム状態解除'); }
   }
   // generate crumb
   crumbCounter++;
@@ -265,19 +296,19 @@ function consumeTool(a, pts){
     a.length -= len*0.05 * (a.hardness==='2B'?1.5: a.hardness==='B'?1.2:1);
     a.thickness += len*0.002;
     if(a.thickness > 3){ /* too thick */ }
-    if(a.length <= 0){ alert('鉛筆がなくなった'); state.active=null; state.currentTool=null; }
+    if(a.length <= 0){ setMessage('鉛筆がなくなった'); state.active=null; state.currentTool=null; }
   } else if(a.kind==='mech'){
     a.leadLength -= len*0.05 * (a.hardness==='2B'?1.5:1);
-    if(a.leadLength <= 0){ alert('芯がなくなった。ノックして。'); }
+    if(a.leadLength <= 0){ setMessage('芯がなくなった。ノックして。'); }
   } else if(a.kind==='coloredPencil'){
     a.length -= len*0.05;
-    if(a.length<=0){ alert('色鉛筆がなくなった'); state.active=null; state.currentTool=null; }
+    if(a.length<=0){ setMessage('色鉛筆がなくなった'); state.active=null; state.currentTool=null; }
   } else if(a.kind==='ballpoint'){
     a.ink -= len*0.05;
-    if(a.ink<=0){ alert('インクが切れた'); state.active=null; state.currentTool=null; }
+    if(a.ink<=0){ setMessage('インクが切れた'); state.active=null; state.currentTool=null; }
   } else if(a.kind==='brush'){
     a.paint -= len*0.1;
-    if(a.paint <= 0){ alert('絵の具がなくなった。つけて。'); }
+    if(a.paint <= 0){ setMessage('絵の具がなくなった。つけて。'); }
   }
 }
 
@@ -309,11 +340,11 @@ paperEl().addEventListener('mousemove', e=>{
   } else if(a.kind==='correctionTape'){
     C.correctionTapeRect(p.x-20, p.y-10, 40, 20);
     a.remaining -= 0.5;
-    if(a.remaining<=0){ alert('修正テープがなくなった'); state.active=null; state.currentTool=null; }
+    if(a.remaining<=0){ setMessage('修正テープがなくなった'); state.active=null; state.currentTool=null; }
   } else if(a.kind==='correctionFluid'){
     C.correctionFluidBlob(p.x,p.y,12);
     a.remaining -= 0.5;
-    if(a.remaining<=0){ alert('修正液がなくなった'); state.active=null; state.currentTool=null; }
+    if(a.remaining<=0){ setMessage('修正液がなくなった'); state.active=null; state.currentTool=null; }
   }
 });
 paperEl().addEventListener('mouseup', e=>{
@@ -374,12 +405,12 @@ $('btnTrash').addEventListener('click', ()=>{
   crumbs = [];
   state.crumbs = crumbs;
   state.money += gain;
-  alert('ゴミを捨てて '+gain+' 円獲得');
+  setMessage('ゴミを捨てて '+gain+' 円獲得');
   renderCrumbs(); updateTopbar();
 });
 
 $('btnNewPaper').addEventListener('click', ()=>{
-  if(state.paper.count<=0){ alert('紙がない。文房具屋へ。'); return; }
+  if(state.paper.count<=0){ setMessage('紙がない。文房具屋へ。'); return; }
   newPaper(state.paper.size);
   C.resizeCanvas(state.paper.width, state.paper.height);
   updateTopbar();
@@ -423,7 +454,7 @@ function openStore(){
   body.querySelectorAll('button[data-key]').forEach(b=>{
     b.onclick = ()=>{
       const key=b.dataset.key, sub=b.dataset.sub, price=+b.dataset.price;
-      if(!state.spend(price)){ alert('お金が足りない'); return; }
+      if(!state.spend(price)){ setMessage('お金が足りない'); return; }
       if(key==='pencil'){ addItem('pencil', sub, 1); }
       else if(key==='mech'){ state.inventory.mech++; }
       else if(key==='eraser'){ 
@@ -447,7 +478,7 @@ function openStore(){
       else if(key==='correctionFluid'){ state.inventory.correctionFluid++; }
       else if(key==='paper'){ state.paper.count += 100; }
       else if(key==='paperCustom'){ state.paper.count += 100; }
-      alert('購入した');
+      setMessage('購入した');
       updateTopbar(); updateSidepanel();
     };
   });
@@ -461,11 +492,11 @@ $('btnElectronics').addEventListener('click', ()=>{
   body.innerHTML='<h2>家電量販店</h2>';
   body.innerHTML += `<div class="store-item"><span>液タブ - 100000円</span><button id="buyTab">買う</button></div>`;
   $('buyTab').onclick = ()=>{
-    if(state.money < 100000){ alert('お金が足りない'); return; }
+    if(state.money < 100000){ setMessage('お金が足りない'); return; }
     state.spend(100000);
     state.inventory.unlocked.liquidTab = true;
     state.gameClear = true;
-    alert('ゲームクリア！他のペイントツールへようこそ。');
+    setMessage('ゲームクリア！他のペイントツールへようこそ。');
     updateTopbar();
   };
   $('modal').classList.remove('hidden');
@@ -477,3 +508,4 @@ $('modalClose').addEventListener('click', ()=> $('modal').classList.add('hidden'
 
 C.initCanvas(state.paper.width, state.paper.height);
 updateTopbar(); updateSidepanel(); renderCrumbs();
+setMessage('準備完了。道具を選んで描き始めてください。');
