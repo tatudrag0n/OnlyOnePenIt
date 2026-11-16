@@ -478,7 +478,7 @@ function openStore(){
       else if(key==='correctionFluid'){ state.inventory.correctionFluid++; }
       else if(key==='paper'){ state.paper.count += 100; }
       else if(key==='paperCustom'){ state.paper.count += 100; }
-      setMessage('購入した');
+      setMessage('購入した: ' + key + (sub?' '+sub:''));
       updateTopbar(); updateSidepanel();
     };
   });
