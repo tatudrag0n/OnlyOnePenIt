@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OnlyOnePenIt</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <h1>OnlyOnePenIt</h1>
+      <div class="money">所持金: <span id="money">1000</span> 円</div>
+      <div class="paper-info">紙: <span id="paperSize">A4</span> 残り <span id="paperCount">100</span> 枚</div>
+      <button id="btnStore">文房具屋</button>
+      <button id="btnElectronics" style="display:none">家電量販店</button>
+      <button id="btnTrash">ゴミ箱</button>
+      <button id="btnNewPaper">新しい紙</button>
+    </header>
+
+    <aside class="toolbar">
+      <div class="tool-group">
+        <h3>描画</h3>
+        <button data-tool="pencil">鉛筆</button>
+        <button data-tool="mech">シャーペン</button>
+        <button data-tool="coloredPencil">色鉛筆</button>
+        <button data-tool="ballpoint">ボールペン</button>
+        <button data-tool="brush">筆</button>
+      </div>
+      <div class="tool-group">
+        <h3>消しゴム</h3>
+        <button data-tool="eraserNormal">普通</button>
+        <button data-tool="eraserHard">かたい</button>
+        <button data-tool="eraserSuper">すごい</button>
+        <button data-tool="eraserColor">色鉛筆用</button>
+        <button data-tool="eraserPen">ペン型</button>
+        <button data-tool="eraserElectric">電動</button>
+      </div>
+      <div class="tool-group">
+        <h3>道具</h3>
+        <button data-tool="ruler">定規</button>
+        <button data-tool="compass">コンパス</button>
+        <button data-tool="correctionTape">修正テープ</button>
+        <button data-tool="correctionFluid">修正液</button>
+      </div>
+      <div class="tool-group">
+        <h3>その他</h3>
+        <button data-tool="crumb">消しカス移動</button>
+        <button data-tool="hand">手 (パン)</button>
+      </div>
+    </aside>
+
+    <main class="canvas-area">
+      <canvas id="paper" width="794" height="1123"></canvas>
+      <div id="crumbsLayer"></div>
+    </main>
+
+    <aside class="sidepanel">
+      <div id="toolOptions"></div>
+      <div id="inventory"></div>
+      <div id="status"></div>
+    </aside>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="modalClose" class="modal-close">× </button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

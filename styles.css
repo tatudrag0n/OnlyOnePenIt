@@ -1,0 +1,30 @@
+* { box-sizing: border-box; }
+body { margin:0; font-family: "Segoe UI", "Yu Gothic", sans-serif; background:#2b2b2b; color:#eee; }
+.topbar { display:flex; gap:12px; align-items:center; padding:8px 12px; background:#1f1f1f; flex-wrap:wrap; }
+.topbar h1 { margin:0; font-size:18px; }
+.money, .paper-info { background:#333; padding:4px 8px; border-radius:4px; }
+button { cursor:pointer; padding:6px 10px; border:1px solid #555; background:#3a3a3a; color:#eee; border-radius:4px; }
+button:hover { background:#4a4a4a; }
+button.active { background:#2a6; border-color:#4c8; }
+#app { display:grid; grid-template-columns: 200px 1fr 260px; grid-template-rows: auto 1fr; height:100vh; }
+.topbar { grid-column:1/-1; }
+.toolbar { background:#252525; padding:8px; overflow:auto; }
+.sidepanel { background:#252525; padding:8px; overflow:auto; }
+.canvas-area { position:relative; overflow:auto; background:#444; display:flex; justify-content:center; padding:20px; }
+#paper { background:#fff; box-shadow:0 0 10px #000; cursor:crosshair; }
+#crumbsLayer { position:absolute; top:20px; left:50%; transform:translateX(-50%); pointer-events:none; }
+.crumb { position:absolute; background:#eee; border:1px solid #999; border-radius:50%; cursor:grab; pointer-events:auto; }
+.modal { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:100; }
+.modal.hidden { display:none; }
+.modal-content { background:#2a2a2a; padding:16px; border-radius:8px; max-width:90vw; max-height:90vh; overflow:auto; width:700px; position:relative; }
+.modal-close { position:absolute; top:8px; right:8px; }
+.tool-group { margin-bottom:12px; }
+.tool-group h3 { margin:4px 0; font-size:13px; color:#aaa; }
+.tool-group button { display:block; width:100%; margin:2px 0; text-align:left; }
+.sidepanel h3 { margin:8px 0 4px; font-size:13px; color:#aaa; }
+.item { background:#333; padding:6px; margin:4px 0; border-radius:4px; font-size:12px; }
+.store-item { display:flex; justify-content:space-between; align-items:center; padding:6px; border-bottom:1px solid #444; }
+.store-item button { padding:4px 8px; }
+#inventory, #status, #toolOptions { font-size:12px; }
+.corner-btns { display:flex; gap:4px; margin:4px 0; }
+.corner-btns button { flex:1; padding:2px; font-size:11px; }
