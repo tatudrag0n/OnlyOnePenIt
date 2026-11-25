@@ -10,3 +10,93 @@
 /* A small shop with a shelf to explore and a real basket to review. */
 .shop-modal{width:min(1000px,100%);padding:30px 34px;max-height:90vh}.shop-header{display:flex;justify-content:space-between;align-items:center;padding-right:48px}.shop-header h2{margin:7px 0 5px;font-size:23px}.shop-header p{margin:0;color:#9ba99a;font-size:11px}.shop-wallet{text-align:right}.shop-wallet span,.shop-wallet small{display:block;color:#a9b8a5;font-size:9px;letter-spacing:1px}.shop-wallet strong{display:block;font-size:19px;color:#556a50;margin:3px 0}.shop-wallet small{letter-spacing:0}.shop-welcome{display:flex;align-items:center;gap:14px;margin:24px 0;background:#f1f6ee;border:1px solid #e5eee1;border-radius:10px;padding:14px 18px}.welcome-flower{font-size:29px;color:#9eb598}.shop-welcome strong{font-size:12px;color:#6e8769}.shop-welcome p{font-size:10px;color:#98aa95;margin:5px 0 0}.welcome-stamp{margin-left:auto;color:#bdcdb8;font-size:9px;line-height:1.6;letter-spacing:1px;font-weight:700}.shop-layout{display:grid;grid-template-columns:minmax(0,1fr) 245px;gap:22px}.shelf-head{display:flex;justify-content:space-between;align-items:end}.shelf-head h3,.basket-head h3{margin:5px 0 0;font-size:14px}.shelf-head h3 span{color:#a3b99d}.shelf-count{font-size:9px;color:#b3beb0}.shop-tabs{display:flex;gap:5px;margin:16px 0 14px;overflow-x:auto}.shop-tabs button{border:1px solid transparent;border-radius:20px;background:#f6f8f4;padding:7px 11px;color:#94a391;font-size:10px;white-space:nowrap}.shop-tabs button.active{background:#81997c;color:#fff}.shop-tabs button:hover:not(.active){background:#e9f1e5}.shop-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0}.shop-item{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;border:1px solid #e8eee5;overflow:hidden;position:relative}.shop-item .shop-art{height:86px;display:grid;place-items:center;position:relative;background:#f5f5ec;overflow:hidden}.shop-item .shop-art:before,.shop-item .shop-art:after{content:'✳';position:absolute;color:#ffffffa8;font-size:20px;left:15px;top:12px}.shop-item .shop-art:after{content:'✧';left:auto;top:auto;right:15px;bottom:9px}.shop-item .shop-icon{background:none;width:auto;height:auto;font-size:49px;line-height:1;color:#b19768;transform:rotate(-20deg);text-shadow:2px 3px #fff}.shop-item[data-key="coloredPencil"] .shop-art{background:#f8ebe5}.shop-item[data-key="coloredPencil"] .shop-icon{color:#ce9183}.shop-item[data-key="ballpoint"] .shop-art{background:#edf3f2}.shop-item[data-key="ballpoint"] .shop-icon{color:#819a99}.shop-item[data-key="brush"] .shop-art{background:#f6eee3}.shop-item[data-key="brush"] .shop-icon{color:#ad8c70}.shop-item[data-key="paper"] .shop-art{background:#f2f3ed}.shop-item[data-key="paper"] .shop-icon{color:#a6b59d;transform:rotate(5deg)}.shop-item[data-key="eraser"] .shop-art{background:#f8eeed}.shop-item[data-key="eraser"] .shop-icon{color:#c99f99}.shop-item[data-key="tablet"] .shop-art{background:#edf0f6}.shop-item[data-key="tablet"] .shop-icon{color:#8290a9;transform:rotate(0)}.shop-item-body{padding:11px;flex:1;display:flex;flex-direction:column}.shop-item strong{font-size:11px;color:#4b5a4a}.shop-item small{font-size:9px;line-height:1.65;min-height:30px;color:#9aa899;margin-top:5px}.shop-item-bottom{display:flex;align-items:center;gap:5px;margin-top:10px}.shop-price{font-weight:800;color:#607a5d;font-size:12px;white-space:nowrap}.shop-item .add-cart{margin-left:auto;border:0;background:#eaf2e6;color:#718d6c;border-radius:6px;padding:7px 8px;font-size:10px;font-weight:bold;white-space:nowrap}.shop-item .add-cart:hover:not(:disabled){background:#dcebd6}.shop-item .wish-toggle{border:1px solid #e7ece4;background:#fff;color:#b4c1af;border-radius:6px;padding:5px 7px;font-size:15px;line-height:1}.shop-item .wish-toggle.selected{color:#d6a29a;background:#fff6f4}.shop-item .product-badge{position:absolute;top:8px;left:8px;background:#ffffffcf;color:#91a68a;padding:4px 6px;border-radius:4px;font-size:8px;font-weight:700}.shop-side{background:#f8faf6;border:1px solid #e9efe6;border-radius:10px;padding:16px;align-self:start}.basket-head{display:flex;align-items:center;gap:9px;padding-bottom:13px;border-bottom:1px solid #e8eee5}.basket-icon{width:34px;height:34px;display:grid;place-items:center;background:#eaf2e6;border-radius:8px;color:#8ba484;font-size:20px}.basket-count{margin-left:auto;font-size:10px;color:#8ca487;background:#eaf2e6;border-radius:20px;padding:4px 7px}.basket-items{min-height:85px;max-height:180px;overflow:auto}.basket-empty{text-align:center;color:#aab8a6;font-size:10px;line-height:1.9;padding:20px 0}.basket-row{padding:10px 0;border-bottom:1px solid #edf1eb}.basket-row-top,.basket-row-bottom{display:flex;justify-content:space-between;align-items:center;gap:5px;font-size:10px}.basket-row-top strong{font-size:10px}.basket-row-bottom{color:#95a691;margin-top:7px}.quantity{display:flex;align-items:center;gap:8px}.quantity button{width:22px;height:22px;border:1px solid #e3ebe0;background:white;color:#80957b;border-radius:5px}.quantity button:disabled{opacity:.4}.basket-total{display:flex;justify-content:space-between;align-items:center;padding:15px 0 12px;font-size:10px;color:#9aa999}.basket-total strong{font-size:16px;color:#526b4e}.checkout{width:100%;border:0;border-radius:7px;background:#809b79;color:white;font-size:11px;font-weight:700;padding:12px;display:flex;justify-content:space-between}.checkout:hover:not(:disabled){background:#6b8866}.shop-note{background:none;padding:0;margin:10px 0 0!important;font-size:10px!important;line-height:1.6;color:#93a58f!important;min-height:30px}.wish-panel{margin-top:16px;border-top:1px solid #e5ece2;padding-top:15px}.wish-panel .eyebrow{font-size:8px}.wish-panel h4{font-size:11px;margin:6px 0}.wish-panel p{font-size:9px;line-height:1.7;color:#9ba99a;margin:5px 0}.wish-panel .wish-progress{height:5px;background:#e5ede1;border-radius:9px;overflow:hidden;margin:9px 0}.wish-panel .wish-progress i{display:block;height:100%;background:#a6bd9f;border-radius:9px}.wish-panel strong{color:#779071;font-size:10px}.shop-footer{display:flex;justify-content:space-between;border-top:1px solid #edf1eb;margin-top:22px;padding-top:16px;color:#c2cec0;font-size:8px;letter-spacing:1px}.shop-modal .modal-close{z-index:1}@media(max-width:800px){.shop-modal{padding:25px 20px}.shop-layout{grid-template-columns:1fr}.shop-side{order:2}.shop-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.basket-items{min-height:0}.basket-empty{padding:12px}.shop-header h2{font-size:19px}}@media(max-width:480px){.shop-modal{padding:24px 15px}.shop-header{padding-right:32px}.shop-header h2{font-size:17px}.shop-wallet strong{font-size:15px}.shop-welcome{margin:18px 0}.welcome-stamp{display:none}.shop-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.shop-footer span:last-child{display:none}}
 .shop-cart-jump{display:none}@media(max-width:800px){.shop-cart-jump{position:sticky;top:-25px;z-index:2;display:flex;width:100%;align-items:center;gap:5px;border:1px solid #e5eee1;border-radius:7px;background:#f3f8f0;color:#789172;font-size:10px;font-weight:700;padding:9px 11px;margin-bottom:12px;text-align:left}.shop-cart-jump span{margin-left:auto}.shop-cart-jump b{margin-left:8px}}@media(max-width:480px){.shop-item-bottom{flex-wrap:wrap}.shop-item .wish-toggle{margin-left:auto}.shop-item .add-cart{flex:1 0 100%;text-align:center}.shop-item small{min-height:30px}}
+
+/* ==== UI improvements (2026-11-25) ====
+   1) 全体: 補助テキストのコントラストを上げ、道具ボタンの押せる感を強くする
+   2) モバイル: 道具箱の横スクロールを廃止してグリッド化、ヘッダーの折り返し解消、
+      キャンバス周りの装飾・余白を削って紙を大きくする */
+
+/* --- contrast & affordance (all sizes) --- */
+.eyebrow{color:#66805f}
+.quiet{color:#68755f}
+.brand small{color:#6d7a68}
+.header-center{color:#5f6f5c}
+.panel-intro{color:#5f6d58;font-size:11px}
+.count-label{color:#75856f}
+.section-label{color:#54684e}
+.section-label span:last-child{color:#75856f}
+.tool{background:#fbfcfa;border-color:#e4e9df;color:#3f4c3d}
+.tool:hover{background:#f1f6ec;border-color:#cfdec6}
+.tool.active{background:#e2eed7;border-color:#a9c795;color:#33512e;box-shadow:inset 0 0 0 1px #a9c795}
+.tool small{color:#75856f}
+.tool-arrow{color:#5d7a55}
+.lock{color:#8a7a45}
+.toolbox-note p{color:#5f6d58}
+.toolbox-note strong{color:#4c6245}
+.breadcrumb{color:#66785e}
+.breadcrumb span{color:#a3b39c}
+.studio-head p{color:#5f6d58}
+.studio-head-right{color:#66785e}
+.saved{color:#66785e}
+.canvas-bottom{color:#5f6d58}
+.canvas-bottom>span:last-child{color:#66785e}
+.studio-footer{color:#75856f}
+.desk-label,.desk-bottom{color:#63785a}
+.paper-corner{color:#9db294}
+.selected-card p{color:#75856f}
+.setting-title small{color:#75856f}
+.setting-hint,.condition p{color:#66755f}
+.condition-row{color:#5f6d58}
+.paper-card small{color:#75856f}
+.paper-card>span{color:#66785e}
+.custom-color{color:#66755f}
+.range-row{color:#66785e}
+.help-button{color:#5d7a55}
+.outline-button,.new-paper,.trash-button{color:#51704b;border-color:#c4d8ba;background:#fbfdf9}
+.guide-steps small{color:#66755f}
+.guide-footer{color:#66755f}
+
+/* --- mobile layout (<=800px) --- */
+@media(max-width:800px){
+  .topbar{height:62px;padding:0 14px;gap:12px}
+  .header-actions{gap:10px;flex:none}
+  .store-button{white-space:nowrap;flex:none;padding:11px 14px;font-size:11px;gap:8px}
+  .help-button{flex:none;white-space:nowrap}
+  .toolbar{padding:12px 14px 16px}
+  .toolbar .section-label{display:flex;margin:14px 0 7px}
+  .toolbar .section-label:first-of-type{margin-top:2px}
+  .tool-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;overflow:visible}
+  .tool{min-width:0;padding:8px 7px;gap:7px}
+  .tool-icon{width:30px;height:30px;font-size:17px;flex:none}
+  .tool strong{font-size:11px;white-space:nowrap}
+  .tool small{font-size:7.5px;letter-spacing:.3px;line-height:1.35}
+  .tool-arrow{display:none}
+  .lock{font-size:11px}
+  .studio{padding:16px 12px 20px}
+  .studio-head{margin-bottom:14px}
+  .desk{height:auto;min-height:0;padding:18px 10px 36px}
+  .desk-bottom{display:none}
+  .paper-wrap{width:min(94%,450px);min-width:0}
+  .canvas-top{height:auto;min-height:54px;padding:8px 12px;flex-wrap:wrap;gap:8px}
+  .inspector{padding:20px 14px}
+}
+/* --- small phones (<=480px) --- */
+@media(max-width:480px){
+  .brand small{display:none}
+  .brand{font-size:15px;gap:8px}
+  .brand-icon{width:32px;height:32px;font-size:20px;border-radius:9px}
+  .store-button{padding:10px 12px}
+  .store-button span:last-child{display:none}
+  .help-button{padding:8px 9px}
+}
+@media(max-width:360px){
+  .tool-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+/* --- second-opinion follow-ups --- */
+.app{min-height:100dvh}
+@media(max-width:800px){.tool{min-height:48px}}
+@media(max-width:360px){
+  .store-button{font-size:0;padding:10px 11px}
+  .store-button span{font-size:14px}
+}
