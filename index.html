@@ -1,75 +1,63 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OnlyOnePenIt</title>
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#f5f4ef"><title>OnlyOnePenIt — 小さな、お絵かきの時間。</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="app">
-    <header class="topbar">
-      <h1>OnlyOnePenIt</h1>
-      <div class="money">所持金: <span id="money">1000</span> 円</div>
-      <div class="paper-info">紙: <span id="paperSize">A4</span> 残り <span id="paperCount">100</span> 枚</div>
-      <button id="btnStore">文房具屋</button>
-      <button id="btnElectronics" style="display:none">家電量販店</button>
-      <button id="btnTrash">ゴミ箱</button>
-      <button id="btnNewPaper">新しい紙</button>
-      <div id="message" class="message">準備完了</div>
-    </header>
-
-    <aside class="toolbar">
-      <div class="tool-group">
-        <h3>描画</h3>
-        <button data-tool="pencil">鉛筆</button>
-        <button data-tool="mech">シャーペン</button>
-        <button data-tool="coloredPencil">色鉛筆</button>
-        <button data-tool="ballpoint">ボールペン</button>
-        <button data-tool="brush">筆</button>
+<div class="app">
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="OnlyOnePenIt ホーム"><span class="brand-icon">✳</span><span>OnlyOnePenIt<small>YOUR LITTLE CREATIVE SPACE</small></span></a>
+    <div class="header-center"><span class="status-dot"></span> あなただけのアトリエ <span class="header-divider"></span> <span class="quiet">今日も、描くことを楽しもう。</span></div>
+    <div class="header-actions"><button id="help" class="help-button" aria-label="遊び方を開く">？ <span>あそびかた</span></button><div class="wallet"><span>◉</span><div><small>所持金</small><strong>¥ <span id="money">1,000</span></strong></div></div><button class="store-button" id="btnStore"><span>♧</span> 文房具屋さん <span>↗</span></button></div>
+  </header>
+  <div class="workspace">
+    <aside class="toolbar panel">
+      <div class="panel-heading"><div><span class="eyebrow">YOUR TOOLBOX</span><h2>道具箱 <span>✦</span></h2></div><span class="count-label">TOOLS</span></div>
+      <p class="panel-intro">お気に入りの道具で、<br>思いのままに描いてみよう。</p>
+      <div class="section-label"><span>描く</span><span>DRAW</span></div>
+      <div class="tool-list" id="drawTools">
+        <button class="tool active" data-tool="pencil"><span class="tool-icon pencil-icon">✎</span><span><strong>鉛筆</strong><small>PENCIL</small></span><span class="tool-arrow">↗</span></button>
+        <button class="tool" data-tool="mech"><span class="tool-icon mech-icon">╱</span><span><strong>シャーペン</strong><small>MECHANICAL PENCIL</small></span></button>
+        <button class="tool" data-tool="coloredPencil"><span class="tool-icon color-icon">✎</span><span><strong>色鉛筆</strong><small>COLORED PENCIL</small></span><span class="lock">⌑</span></button>
+        <button class="tool" data-tool="ballpoint"><span class="tool-icon pen-icon">✒</span><span><strong>ボールペン</strong><small>BALLPOINT PEN</small></span><span class="lock">⌑</span></button>
+        <button class="tool" data-tool="brush"><span class="tool-icon brush-icon">♢</span><span><strong>絵筆</strong><small>PAINT BRUSH</small></span><span class="lock">⌑</span></button>
       </div>
-      <div class="tool-group">
-        <h3>消しゴム</h3>
-        <button data-tool="eraserNormal">普通</button>
-        <button data-tool="eraserHard">かたい</button>
-        <button data-tool="eraserSuper">すごい</button>
-        <button data-tool="eraserColor">色鉛筆用</button>
-        <button data-tool="eraserPen">ペン型</button>
-        <button data-tool="eraserElectric">電動</button>
-      </div>
-      <div class="tool-group">
-        <h3>道具</h3>
-        <button data-tool="ruler">定規</button>
-        <button data-tool="compass">コンパス</button>
-        <button data-tool="correctionTape">修正テープ</button>
-        <button data-tool="correctionFluid">修正液</button>
-      </div>
-      <div class="tool-group">
-        <h3>その他</h3>
-        <button data-tool="crumb">消しカス移動</button>
-        <button data-tool="hand">手 (パン)</button>
-      </div>
+      <div class="section-label"><span>消す・整える</span><span>EDIT</span></div>
+      <div class="tool-list"><button class="tool" data-tool="eraser"><span class="tool-icon eraser-icon">▰</span><span><strong>消しゴム</strong><small>ERASER</small></span></button><button class="tool" data-tool="ruler"><span class="tool-icon ruler-icon">▱</span><span><strong>定規</strong><small>RULER</small></span></button><button class="tool" data-tool="hand"><span class="tool-icon hand-icon">☝</span><span><strong>手で集める</strong><small>SWEEP CRUMBS</small></span></button></div>
+      <div class="toolbox-note"><span>✳</span><p><strong>道具を増やそう</strong><br>文房具屋さんで新しい<br>道具に出会えるよ。</p><button id="btnStoreSmall" aria-label="文房具屋さんへ">↗</button></div>
     </aside>
-
-    <main class="canvas-area">
-      <canvas id="paper" width="794" height="1123"></canvas>
-      <div id="crumbsLayer"></div>
+    <main class="studio">
+      <div class="studio-head"><div><div class="breadcrumb">MY ATELIER <span>/</span> CANVAS <span class="tiny-star">✦</span></div><h1>小さな、お絵かきの時間。<span>✳</span></h1><p>まっさらな紙の上に、思いつくまま描いてみよう。</p></div><div class="studio-head-right"><span class="live-dot"></span> YOUR CREATIVE SPACE <span class="flower">✿</span></div></div>
+      <div class="canvas-shell">
+        <div class="canvas-top"><div><span class="paper-icon">▧</span><strong>無題のキャンバス</strong><span class="paper-badge">A4</span><span class="saved" id="saved">● 自動保存</span></div><div class="canvas-actions"><button id="undo" title="元に戻す (Ctrl/⌘ + Z)" aria-label="元に戻す">↶</button><button id="redo" title="やり直す (Ctrl/⌘ + Shift + Z)" aria-label="やり直す">↷</button><span></span><button id="download" title="画像を保存" aria-label="画像を保存">⇩</button><button id="newPaper" title="新しい紙" aria-label="新しい紙">＋</button></div></div>
+        <div class="desk" id="desk"><div class="desk-label">MAKE SOMETHING<br><strong>BEAUTIFUL.</strong> <span>✳</span></div><div class="paper-wrap"><canvas id="paper" width="794" height="1123" aria-label="お絵かきキャンバス"></canvas><canvas id="crumbLayer" width="794" height="1123" aria-hidden="true"></canvas><div class="paper-corner">YOUR IDEAS<br>START HERE <span>↗</span></div></div><div class="desk-bottom">✳ &nbsp; A LITTLE SPACE FOR BIG IDEAS</div><div class="canvas-hint" id="canvasHint">✎ &nbsp; 紙の上をドラッグして描いてみよう</div></div>
+        <div class="canvas-bottom"><span><span class="green-dot"></span> <span id="message" role="status" aria-live="polite">鉛筆を持って、自由に描いてみよう。</span></span><span>DRAG TO DRAW <b>✧</b></span></div>
+      </div>
+      <div class="studio-footer"><span>✽ &nbsp; EVERY LITTLE STROKE IS A GOOD START.</span><span>MADE FOR YOUR IMAGINATION &nbsp; ♡</span></div>
     </main>
-
-    <aside class="sidepanel">
-      <div id="toolOptions"></div>
-      <div id="inventory"></div>
-      <div id="status"></div>
+    <aside class="inspector panel">
+      <div class="panel-heading"><div><span class="eyebrow">CURRENT TOOL</span><h2>道具の設定 <span>✦</span></h2></div></div>
+      <div class="selected-card"><div class="selected-illustration" id="selectedIcon">✎</div><div><span class="eyebrow">NOW USING</span><h3 id="selectedName">鉛筆</h3><p id="selectedSub">PENCIL · HB</p></div><span class="selected-check">✓</span></div>
+      <div class="setting-block"><div class="setting-title"><span>色を選ぶ</span><small>COLOR</small></div><div id="colors" class="colors"></div><label class="custom-color">好きな色をつくる <input type="color" id="customColor" value="#424841" aria-label="好きな色を選ぶ"></label><p class="setting-hint" id="colorHint">鉛筆らしい、やさしい黒。</p></div>
+      <div class="setting-block"><div class="setting-title"><span>線の太さ</span><small>SIZE</small></div><div class="range-row"><span>●</span><input id="size" type="range" min="1" max="24" value="3" aria-label="線の太さ"><span>●</span><output id="sizeValue">3 px</output></div></div>
+      <div class="setting-block"><div class="setting-title"><span>筆圧・濃さ</span><small>OPACITY</small></div><div class="range-row"><span>◌</span><input id="opacity" type="range" min="10" max="100" value="75" aria-label="筆圧・濃さ"><span>●</span><output id="opacityValue">75%</output></div></div>
+      <div class="setting-block condition"><div class="setting-title"><span>道具の状態</span><small>CONDITION</small></div><div class="condition-row"><span id="conditionLabel">鉛筆の残り</span><strong id="conditionValue">100%</strong></div><div class="progress"><i id="conditionBar"></i></div><p id="conditionHint">使うほど少しずつ短くなります。</p><button class="outline-button" id="maintain">✧ &nbsp; 鉛筆を削る</button></div>
+      <div class="paper-card"><div class="paper-card-icon">▤</div><div><strong>紙のストック</strong><small>A4・白い画用紙</small></div><span><b id="paperCount">100</b> 枚</span></div>
+      <button class="new-paper" id="newPaperSide">＋ &nbsp; 新しい紙に取り替える</button>
+      <div class="tip"><span>✦</span><p><strong>ちょっとしたヒント</strong><br>消しカスは「手で集める」で寄せて<br>ひとまとめにしてから捨てよう。</p></div>
+      <button class="trash-button" id="trash">♧ &nbsp; まとまりをゴミ箱へ <span id="crumbCount">0 個</span></button>
     </aside>
   </div>
-
-  <div id="modal" class="modal hidden">
-    <div class="modal-content">
-      <button id="modalClose" class="modal-close">× </button>
-      <div id="modalBody"></div>
-    </div>
-  </div>
-
-  <script type="module" src="src/main.js"></script>
-</body>
-</html>
+</div>
+<div class="modal hidden" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card shop-modal"><button id="modalClose" class="modal-close" aria-label="閉じる">×</button>
+  <div class="shop-header"><div><span class="eyebrow">THE LITTLE STATIONERY SHOP &nbsp; ✳</span><h2 id="modalTitle">まちの文房具屋さん</h2><p>お気に入りを探す、わくわくする時間。</p></div><div class="shop-wallet"><span>YOUR WALLET</span><strong id="modalMoney"></strong><small>いまのおこづかい</small></div></div>
+  <div class="shop-welcome"><span class="welcome-flower">✿</span><div><strong>いらっしゃいませ！</strong><p>気になる道具を手にとって、ゆっくり選んでね。</p></div><span class="welcome-stamp">GOOD TOOLS,<br>GOOD DAYS. ✳</span></div>
+  <div class="shop-layout"><section class="shelf"><div class="shelf-head"><div><span class="eyebrow">FIND YOUR FAVORITE</span><h3>道具をさがす <span>✦</span></h3></div><span class="shelf-count" id="shelfCount"></span></div><div class="shop-tabs" role="group" aria-label="商品の種類"><button class="active" data-category="all">すべて</button><button data-category="draw">描く道具</button><button data-category="supply">紙・お手入れ</button><button data-category="dream">あこがれ</button></div><button class="shop-cart-jump" id="viewBasket">♧ &nbsp; お買いものかごを見る <span id="jumpCount">0 点</span> <b>↓</b></button><div class="shop-grid" id="shopItems"></div></section>
+  <aside class="shop-side"><div class="basket-head"><span class="basket-icon">♧</span><div><span class="eyebrow">YOUR BASKET</span><h3>お買いものかご</h3></div><span id="basketCount" class="basket-count">0</span></div><div id="basketItems" class="basket-items"></div><div class="basket-total"><span>合計</span><strong id="basketTotal">¥ 0</strong></div><button id="checkout" class="checkout">お会計へ <span>→</span></button><p class="shop-note" id="shopMessage" role="status" aria-live="polite">気になるものをかごに入れてね。</p><div id="wishPanel" class="wish-panel"></div></aside></div>
+  <div class="shop-footer"><span>✳ &nbsp; LITTLE TOOLS, BIG IDEAS.</span><span>THANK YOU FOR STOPPING BY ♡</span></div>
+</div></div>
+<div class="modal hidden" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="modal-card help-card"><button id="helpClose" class="modal-close" aria-label="閉じる">×</button><span class="eyebrow">WELCOME TO YOUR ATELIER</span><h2 id="helpTitle">はじめてのアトリエ <span>✳</span></h2><p>あなたのペースで、自由に描こう。<br>道具の手触りも、ちょっとしたお片づけも楽しんで。</p><div class="guide-steps"><div><b>01</b><span><strong>好きな道具で描く</strong><small>左の道具箱から選んで、紙の上をドラッグ。色や太さは右側で調整できます。</small></span></div><div><b>02</b><span><strong>消して、集める</strong><small>消しゴムで描いた線を消すと消しカスが出ます。「手で集める」で寄せてまとめよう。</small></span></div><div><b>03</b><span><strong>次の道具に出会う</strong><small>まとまった消しカスをゴミ箱に捨てるとお小遣いに。文房具屋さんをのぞいてみよう。</small></span></div></div><div class="guide-footer">絵は自動保存されます。大切な作品は ⇩ から PNG でも保存してね。<br><kbd>Ctrl / ⌘</kbd> + <kbd>Z</kbd> で取り消し、<kbd>Shift</kbd> を加えるとやり直し。</div><button id="helpStart" class="guide-start">さっそく描いてみる <span>↗</span></button></div></div>
+<script type="module" src="src/main.js"></script>
+</body></html>
