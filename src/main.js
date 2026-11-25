@@ -52,7 +52,9 @@ function message(t) { const el = $('message'); if (el) el.textContent = t; }
 function msgOnce(t) { const now = Date.now(); if (now - msgLock > 2500) { msgLock = now; message(t); } }
 let saveTimer = null;
 function save() { clearTimeout(saveTimer); saveTimer = setTimeout(() => { try { localStorage.setItem(STORAGE, JSON.stringify({ state, particles, img: paper.toDataURL(), map: mapC.toDataURL(), ind: indentC.toDataURL(), tape: tapeC.toDataURL(), dims: [paper.width, paper.height] })); } catch (e) { /* storage full etc. */ } }, 350); }
-function setDims(w, h) { [paper, overlay, crumbC, mapC, indentC, tapeC].forEach(c => { c.width = w; c.height = h; }); }
+function setDims(w, h) { [paper, overlay, crumbC, mapC, indentC, tapeC].forEach(c => { c.width = w; c.height = h; }); sizePaper(); }
+function sizePaper() { const desk = $('desk'), wrap = document.querySelector('.paper-wrap'); if (!desk || !wrap) return; const cs = getComputedStyle(desk); const availW = desk.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight); const availH = desk.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom); const ratio = paper.width / paper.height; let w = Math.min(availW, availH * ratio); if (!(w > 0)) return; wrap.style.width = w + 'px'; }
+window.addEventListener('resize', sizePaper);
 function loadImages() { try { const s = JSON.parse(localStorage.getItem(STORAGE)); if (!s || !s.img) return; if (s.dims && (s.dims[0] !== paper.width || s.dims[1] !== paper.height)) setDims(s.dims[0], s.dims[1]); const put = (cv, src) => new Promise(res => { if (!src) return res(); const i = new Image(); i.onload = () => { cv.getContext('2d').drawImage(i, 0, 0); res(); }; i.onerror = res; i.src = src; }); Promise.all([put(paper, s.img), put(mapC, s.map), put(indentC, s.ind), put(tapeC, s.tape)]).then(() => drawCrumbs()); } catch (e) { /* ignore */ } }
 
 // ---------- history ----------
@@ -83,8 +85,8 @@ function bar(label, val) { return `<div class="condition-row"><span>${label}</sp
 function segs(items, cur, attr) { return `<div class="seg-group">${items.map(([v, label, sub, dis]) => `<button class="seg ${v === cur ? 'active' : ''}" data-${attr}="${v}" ${dis ? 'disabled' : ''}>${label}${sub ? `<small>${sub}</small>` : ''}</button>`).join('')}</div>`; }
 
 function renderHeader() { $('money').textContent = Math.round(state.money).toLocaleString('ja-JP'); if (state.money > 10000) state.tabletUnlocked = true; $('btnElectronics').style.display = state.tabletUnlocked ? '' : 'none'; const b = document.querySelector('.paper-badge'); if (b) b.textContent = state.paperSize; }
-function renderToolbar() { document.querySelectorAll('.tool').forEach(btn => { const t = btn.dataset.tool; btn.classList.toggle('active', state.tool === t); const lock = btn.querySelector('.lock'); if (lock) lock.style.display = toolAvailable(t) ? 'none' : ''; }); paper.classList.toggle('sweeping', state.tool === 'hand'); }
-function renderAll() { renderHeader(); renderToolbar(); renderInspector(); drawCrumbs(); }
+function renderToolbar() { document.querySelectorAll('.tool').forEach(btn => { const t = btn.dataset.tool; btn.title = (TOOLMETA[t] || {}).name || t; btn.classList.toggle('active', state.tool === t); const lock = btn.querySelector('.lock'); if (lock) lock.style.display = toolAvailable(t) ? 'none' : ''; }); paper.classList.toggle('sweeping', state.tool === 'hand'); }
+function renderAll() { renderHeader(); renderToolbar(); renderInspector(); drawCrumbs(); sizePaper(); }
 
 function renderInspector() {
   const ins = document.querySelector('.inspector'); if (!ins) return;
@@ -435,8 +437,12 @@ function endStroke(e) { if (!drawing) return; const p = last;
 paper.addEventListener('pointerup', endStroke); paper.addEventListener('pointercancel', endStroke);
 
 // ---------- chrome / modals / init ----------
-document.querySelectorAll('.tool').forEach(b => b.addEventListener('click', () => { state.tool = b.dataset.tool; renderAll(); save(); if (!toolAvailable(state.tool)) message('その道具はまだ持っていない。文房具屋さんで買えるよ。'); }));
-$('btnStore').addEventListener('click', openShop); const bs = $('btnStoreSmall'); if (bs) bs.addEventListener('click', openShop);
+document.querySelectorAll('.tool').forEach(b => b.addEventListener('click', () => { document.body.classList.add('inspector-open'); state.tool = b.dataset.tool; renderAll(); save(); if (!toolAvailable(state.tool)) message('その道具はまだ持っていない。文房具屋さんで買えるよ。'); }));
+$('btnStore').addEventListener('click', openShop);
+$('inspectorToggle').addEventListener('click', () => document.body.classList.toggle('inspector-open'));
+if (window.innerWidth >= 1200) document.body.classList.add('inspector-open');
+setTimeout(sizePaper, 0);
+window.addEventListener('load', () => setTimeout(sizePaper, 60)); const bs = $('btnStoreSmall'); if (bs) bs.addEventListener('click', openShop);
 $('modalClose').addEventListener('click', () => $('modal').classList.add('hidden'));
 document.querySelectorAll('.shop-tabs button').forEach(b => b.addEventListener('click', () => { shopCat = b.dataset.category; document.querySelectorAll('.shop-tabs button').forEach(x => x.classList.toggle('active', x === b)); renderShop(); }));
 $('checkout').addEventListener('click', checkout);
