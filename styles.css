@@ -100,3 +100,96 @@
   .store-button{font-size:0;padding:10px 11px}
   .store-button span{font-size:14px}
 }
+
+/* ==== No-scroll layout (2026-11-25) ====
+   画面スクロールを前提にしない。アプリ全体を 100dvh に収め、
+   紙の大きさは残りの高さから逆算する。 */
+html,body{height:100%}
+body{overflow:hidden}
+.app{height:100dvh;display:flex;flex-direction:column}
+.topbar{flex:none}
+.workspace{flex:1;min-height:0}
+.panel{overflow:hidden}
+.studio{display:flex;flex-direction:column;min-height:0;padding:22px 28px 14px}
+.studio-head{flex:none;margin-bottom:14px}
+.canvas-shell{flex:1;min-height:0;display:flex;flex-direction:column}
+.canvas-top,.canvas-bottom{flex:none}
+.desk{flex:1;min-height:0;height:auto;overflow:hidden;padding:20px 16px 34px}
+.paper-wrap{width:min(94%,calc((100dvh - 380px)*0.7071));min-width:0}
+.studio-footer{flex:none;margin-top:10px}
+/* inspector / toolbar compaction so everything fits without scrolling */
+.panel{padding:22px 18px}
+.selected-card{margin:16px 0 18px}
+.setting-block{padding:13px 0}
+.colors{margin-top:11px}
+.range-row{margin-top:11px}
+.condition-row{margin-top:12px}
+.paper-card{padding-top:13px}
+.tip{margin-top:14px;padding:10px}
+.toolbox-note{margin-top:16px}
+@media(max-height:860px) and (min-width:801px){
+  .panel-intro{display:none}
+  .tip{display:none}
+  .studio h1{font-size:20px;margin:9px 0 5px}
+  .setting-block{padding:10px 0}
+  .selected-card{margin:12px 0 14px}
+}
+@media(max-height:720px) and (min-width:801px){
+  .toolbox-note{display:none}
+  .studio-footer{display:none}
+  .section-label{margin:13px 0 7px}
+  .tool{padding:6px 8px}
+}
+
+/* --- mobile: one-screen app layout (<=800px) --- */
+@media(max-width:800px){
+  .workspace{display:grid;grid-template-columns:62px minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;grid-template-areas:"toolbar studio" "inspector inspector";flex:1;min-height:0}
+  /* left icon rail */
+  .toolbar{grid-area:toolbar;padding:10px 7px;border-right:1px solid #e9ebe5;border-top:0;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+  .toolbar .section-label{display:none}
+  .tool-list{display:flex;flex-direction:column;gap:5px;overflow:visible}
+  .tool{min-height:46px;padding:6px 0;justify-content:center;gap:0}
+  .tool>span:nth-child(2){display:none}
+  .tool-icon{width:34px;height:34px}
+  .tool .lock{position:absolute;top:2px;right:3px;margin:0;font-size:9px}
+  .tool .tool-arrow{display:none}
+  /* canvas area */
+  .studio{grid-area:studio;padding:10px 10px 8px}
+  .studio-head{display:none}
+  .canvas-top{min-height:46px}
+  .desk{padding:12px 8px 30px}
+  .paper-wrap{width:min(97%,calc((100dvh - 430px)*0.7071))}
+  .canvas-hint{display:none}
+  /* bottom inspector bar */
+  .inspector{grid-area:inspector;border-left:0;border-top:1px solid #e9ebe5;padding:10px 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;align-items:start}
+  .inspector>.panel-heading,.inspector .selected-card,.inspector .tip{display:none}
+  .inspector .setting-block{padding:7px 0;border-top:0}
+  .inspector .setting-block:first-of-type{grid-column:1/-1}
+  .inspector .colors{margin-top:8px;flex-wrap:nowrap;gap:6px}
+  .inspector .swatch{width:21px;height:21px}
+  .inspector .custom-color{margin-top:7px}
+  .inspector .setting-hint{display:none}
+  .inspector .range-row{margin-top:8px}
+  .inspector .condition{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:6px 12px;padding-bottom:2px}
+  .inspector .condition .setting-title{display:none}
+  .inspector .condition-row{margin:0;display:contents}
+  .inspector .condition-row span{font-size:10px;white-space:nowrap}
+  .inspector .condition .progress{margin:0}
+  .inspector .condition p{display:none}
+  .inspector .condition .outline-button{margin:0;width:auto;padding:7px 12px;white-space:nowrap}
+  .inspector .paper-card{border:0;padding:4px 0 0}
+  .inspector .new-paper{margin-top:4px;padding:8px}
+  .inspector .trash-button{grid-column:1/-1;margin-top:6px;padding:9px}
+}
+
+/* --- short-height compaction: keep every control reachable, hide only decoration/info --- */
+@media(max-height:1000px) and (min-width:801px){
+  .tip{display:none}
+}
+@media(max-height:780px) and (min-width:801px){
+  .selected-card{display:none}
+  .setting-hint,.condition p{display:none}
+  .paper-card{display:none}
+  .setting-block{padding:9px 0}
+  .panel-heading h2{margin-top:4px}
+}
