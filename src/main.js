@@ -64,11 +64,11 @@ function syncUndoBtns() { const u = $('undo'), r = $('redo'); if (u) u.disabled 
 
 // ---------- shared UI ----------
 const TOOLMETA = {
-  pencil: { name: '鉛筆', sub: 'PENCIL', icon: '✎' }, mech: { name: 'シャーペン', sub: 'MECHANICAL PENCIL', icon: '╱' },
-  coloredPencil: { name: '色鉛筆', sub: 'COLORED PENCIL', icon: '✎' }, ballpoint: { name: 'ボールペン', sub: 'BALLPOINT PEN', icon: '✒' },
-  brush: { name: '絵筆', sub: 'PAINT BRUSH', icon: '♢' }, eraser: { name: '消しゴム', sub: 'ERASER', icon: '▰' },
-  correction: { name: '修正', sub: 'CORRECTION', icon: '▭' }, ruler: { name: '定規', sub: 'RULER', icon: '▱' },
-  compass: { name: 'コンパス', sub: 'COMPASS', icon: '◎' }, hand: { name: '手で集める', sub: 'SWEEP CRUMBS', icon: '☝' },
+  pencil: { name: '鉛筆', sub: '', icon: '✎' }, mech: { name: 'シャーペン', sub: '', icon: '╱' },
+  coloredPencil: { name: '色鉛筆', sub: '', icon: '✎' }, ballpoint: { name: 'ボールペン', sub: '', icon: '✒' },
+  brush: { name: '絵筆', sub: '', icon: '♢' }, eraser: { name: '消しゴム', sub: '', icon: '▰' },
+  correction: { name: '修正', sub: '', icon: '▭' }, ruler: { name: '定規', sub: '', icon: '▱' },
+  compass: { name: 'コンパス', sub: '', icon: '◎' }, hand: { name: '手で集める', sub: '', icon: '☝' },
 };
 function toolAvailable(t) {
   if (t === 'coloredPencil') return Object.values(state.cp.stock).some(v => v > 0);
@@ -91,43 +91,43 @@ function renderInspector() {
   const t = state.tool, M = TOOLMETA[t];
   let dyn = '';
   if (t === 'pencil') { const P = state.pencil, cur = P.cur[P.hard], H = HARD[P.hard];
-    dyn = `<div class="setting-block"><div class="setting-title"><span>芯の硬さ</span><small>HARDNESS</small></div>${segs(Object.keys(HARD).map(h => [h, h, `在庫 ${P.stock[h]}`, P.stock[h] <= 0]), P.hard, 'hard')}<p class="mini-note">硬いほど薄く長持ち、柔らかいほど濃く消耗が激しい。重ね描きで濃くなる。</p></div>
-    <div class="setting-block condition"><div class="setting-title"><span>鉛筆の状態</span><small>CONDITION</small></div>${bar('長さ', cur.length)}${bar('先の丸さ', 100 - cur.dull)}<p class="mini-note">${cur.dull >= 100 ? '先が丸くなりすぎて書けない。削ってね。' : cur.length <= 18 ? '短くなって線がブレやすくなっている。' : '使うほど先が太くなっていく。'}</p><button class="outline-button" id="maintain">✧ 鉛筆を削る${state.sharpener ? '（長さ消費）' : '（鉛筆削りが必要）'}</button></div>`;
+    dyn = `<div class="setting-block"><div class="setting-title"><span>芯の硬さ</span></div>${segs(Object.keys(HARD).map(h => [h, h, `在庫 ${P.stock[h]}`, P.stock[h] <= 0]), P.hard, 'hard')}<p class="mini-note">硬いほど薄く長持ち、柔らかいほど濃く消耗が激しい。重ね描きで濃くなる。</p></div>
+    <div class="setting-block condition"><div class="setting-title"><span>鉛筆の状態</span></div>${bar('長さ', cur.length)}${bar('先の丸さ', 100 - cur.dull)}<p class="mini-note">${cur.dull >= 100 ? '先が丸くなりすぎて書けない。削ってね。' : cur.length <= 18 ? '短くなって線がブレやすくなっている。' : '使うほど先が太くなっていく。'}</p><button class="outline-button" id="maintain">鉛筆を削る${state.sharpener ? '（長さ消費）' : '（鉛筆削りが必要）'}</button></div>`;
   } else if (t === 'mech') { const Mc = state.mech;
     dyn = `<div class="setting-block"><div class="setting-title"><span>芯の種類</span><small>LEAD</small></div>${segs(Object.keys(HARD).map(h => [h, h, `替芯 ${Mc.leads[h]}`, false]), Mc.colorLead ? '' : Mc.hard, 'lead')}<div class="setting-title" style="margin-top:12px"><span>色つき芯</span><small>COLOR LEAD</small></div>${segs(Object.keys(LEAD_COLORS).map(c => [c, c, `替芯 ${Mc.colorLeads[c]}`, false]), Mc.colorLead || '', 'leadcolor')}<p class="mini-note">芯を変えるときは交換が必要（在庫から1本使う）。硬い芯は紙に跡が残りやすい。</p></div>
-    <div class="setting-block condition"><div class="setting-title"><span>芯の状態</span><small>CONDITION</small></div>${bar('本体の芯', Mc.internal / 60 * 100)}<div class="condition-row"><span>出ている芯</span><strong>${Mc.exposed.toFixed(1)} mm</strong></div><p class="mini-note">${Mc.exposed < 0.1 ? '芯が出ていない。ノックしてね。' : Mc.exposed > 1 ? '出しすぎると折れやすい。' : 'ノックで芯を出す。本体の芯が尽きたら交換。'}</p><button class="outline-button" id="maintain">✧ ノックする</button><button class="outline-button" id="exchange">芯を交換する</button></div>`;
+    <div class="setting-block condition"><div class="setting-title"><span>芯の状態</span></div>${bar('本体の芯', Mc.internal / 60 * 100)}<div class="condition-row"><span>出ている芯</span><strong>${Mc.exposed.toFixed(1)} mm</strong></div><p class="mini-note">${Mc.exposed < 0.1 ? '芯が出ていない。ノックしてね。' : Mc.exposed > 1 ? '出しすぎると折れやすい。' : 'ノックで芯を出す。本体の芯が尽きたら交換。'}</p><button class="outline-button" id="maintain">ノックする</button><button class="outline-button" id="exchange">芯を交換する</button></div>`;
   } else if (t === 'coloredPencil') { const C = state.cp, cur = C.cur[C.color];
     dyn = `<div class="setting-block"><div class="setting-title"><span>色</span><small>COLOR</small></div>${segs(Object.keys(CP_COLORS).map(c => [c, c, `在庫 ${C.stock[c]}`, C.stock[c] <= 0]), C.color, 'cpcolor')}</div>
-    <div class="setting-block condition"><div class="setting-title"><span>色鉛筆の状態</span><small>CONDITION</small></div>${bar('長さ', cur.length)}${bar('先の丸さ', 100 - cur.dull)}<p class="mini-note">消すには色鉛筆用消しゴムが必要。鉛筆と同じく削れる。</p><button class="outline-button" id="maintain">✧ 色鉛筆を削る${state.sharpener ? '（長さ消費）' : '（鉛筆削りが必要）'}</button></div>`;
+    <div class="setting-block condition"><div class="setting-title"><span>色鉛筆の状態</span></div>${bar('長さ', cur.length)}${bar('先の丸さ', 100 - cur.dull)}<p class="mini-note">消すには色鉛筆用消しゴムが必要。鉛筆と同じく削れる。</p><button class="outline-button" id="maintain">色鉛筆を削る${state.sharpener ? '（長さ消費）' : '（鉛筆削りが必要）'}</button></div>`;
   } else if (t === 'ballpoint') { const B = state.bp;
     dyn = `<div class="setting-block"><div class="setting-title"><span>色</span><small>COLOR</small></div>${segs(Object.keys(BP_COLORS).map(c => [c, c, `在庫 ${B.stock[c]}`, B.stock[c] <= 0]), B.color, 'bpcolor')}</div>
     <div class="setting-block condition"><div class="setting-title"><span>インク</span><small>INK</small></div>${bar('インクの残り', B.ink[B.color])}<p class="mini-note">消しゴムでは消えない。直すには修正テープ／修正液。インクが切れたら新しい1本に替わる（在庫が必要）。</p></div>`;
   } else if (t === 'brush') { const Br = state.brush;
     dyn = `<div class="setting-block"><div class="setting-title"><span>筆</span><small>BRUSH</small></div>${segs(Object.keys(Br.stock).map(b => [b, b, `在庫 ${Br.stock[b]}`, Br.stock[b] <= 0]), Br.type, 'brushtype')}</div>
     <div class="setting-block"><div class="setting-title"><span>絵の具</span><small>PAINT</small></div>${segs(Object.keys(PAINTS).map(c => [c, c, `残量 ${Math.round(Br.paints[c])}%`, Br.paints[c] <= 0]), Br.paint, 'paintcolor')}${Br.palette ? `<label class="custom-color">混ぜ色（パレット）<input type="color" id="mixColor" value="${Br.mix}"></label>` : '<p class="mini-note">パレットを解放すると色を混ぜられる。</p>'}${Br.bucket ? `<label class="mini-note"><input type="checkbox" id="dilute" ${Br.dilute ? 'checked' : ''}> バケツの水で薄める</label>` : '<p class="mini-note">バケツを解放すると絵の具を薄められる。</p>'}</div>
-    <div class="setting-block condition"><div class="setting-title"><span>筆の状態</span><small>CONDITION</small></div>${bar('ついている絵の具', Br.dip)}<p class="mini-note">一定量使うごとに絵の具をつけ直す。絵の具は消すことができない。</p><button class="outline-button" id="maintain">✧ 絵の具をつける</button></div>`;
+    <div class="setting-block condition"><div class="setting-title"><span>筆の状態</span></div>${bar('ついている絵の具', Br.dip)}<p class="mini-note">一定量使うごとに絵の具をつけ直す。絵の具は消すことができない。</p><button class="outline-button" id="maintain">絵の具をつける</button></div>`;
   } else if (t === 'eraser') { const E = state.eraser;
     if (E.type === 'pen' || E.type === 'elec') { const pen = E.type === 'pen';
       dyn = `<div class="setting-block"><div class="setting-title"><span>種類</span><small>TYPE</small></div>${segs(eraserTypeItems(), E.type, 'erastype')}</div>
-      <div class="setting-block condition"><div class="setting-title"><span>状態</span><small>CONDITION</small></div>${bar('替えゴム', pen ? E.penRemain : E.elecRemain)}${pen ? '' : bar('電池', E.battery)}<p class="mini-note">${pen ? '消す範囲が変わらず、黒消しゴム状態にならない。折れやすい。' : '消す範囲が変わらず、黒くならず、折れない。すり減りやすく少しブレる。'}</p></div>`;
+      <div class="setting-block condition"><div class="setting-title"><span>状態</span></div>${bar('替えゴム', pen ? E.penRemain : E.elecRemain)}${pen ? '' : bar('電池', E.battery)}<p class="mini-note">${pen ? '消す範囲が変わらず、黒消しゴム状態にならない。折れやすい。' : '消す範囲が変わらず、黒くならず、折れない。すり減りやすく少しブレる。'}</p></div>`;
     } else { const P = ERASERS[E.type], cur = E.cur[E.type], cn = cur.corners[cur.corner];
       dyn = `<div class="setting-block"><div class="setting-title"><span>種類</span><small>TYPE</small></div>${segs(eraserTypeItems(), E.type, 'erastype')}</div>
       <div class="setting-block"><div class="setting-title"><span>使う角</span><small>CORNER</small></div><div class="corner-grid">${cur.corners.map((c, i) => `<button class="corner-btn ${i === cur.corner ? 'active' : ''}" data-corner="${i}">${['左上', '右上', '左下', '右下'][i]}${c.on ? ' 黒' : ''}</button>`).join('')}</div><p class="mini-note">角は使うほど丸くなり、消す範囲が広がる。黒消しゴム状態は角ごと。</p></div>
-      <div class="setting-block condition"><div class="setting-title"><span>消しゴムの状態</span><small>CONDITION</small></div>${bar('残り', cur.remain)}${bar('角の丸さ', cn.wear)}${cn.on ? '<p class="mini-note">この角は黒消しゴム状態。こすり続けると解除される。</p>' : ''}<p class="mini-note">${P.name}（在庫 ${E.stock[E.type]}）。完全に消すには何度かこする必要がある。</p></div>`;
+      <div class="setting-block condition"><div class="setting-title"><span>消しゴムの状態</span></div>${bar('残り', cur.remain)}${bar('角の丸さ', cn.wear)}${cn.on ? '<p class="mini-note">この角は黒消しゴム状態。こすり続けると解除される。</p>' : ''}<p class="mini-note">${P.name}（在庫 ${E.stock[E.type]}）。完全に消すには何度かこする必要がある。</p></div>`;
     }
   } else if (t === 'correction') { const C = state.corr;
     dyn = `<div class="setting-block"><div class="setting-title"><span>種類</span><small>TYPE</small></div>${segs([['tape', '修正テープ', `在庫 ${C.tapeStock}`], ['fluid', '修正液', `在庫 ${C.fluidStock}`]], C.type, 'corrtype')}<p class="mini-note">あらゆるものを消せる（覆う）。${C.type === 'tape' ? 'テープの輪郭が少し見え、その上にはボールペン以外で描けない。' : '少しベージュっぽくなる。'}</p></div>
-    <div class="setting-block condition"><div class="setting-title"><span>残り</span><small>CONDITION</small></div>${bar(C.type === 'tape' ? 'テープの長さ' : '修正液の容量', C.type === 'tape' ? C.tapeRemain : C.fluidRemain)}</div>`;
+    <div class="setting-block condition"><div class="setting-title"><span>残り</span></div>${bar(C.type === 'tape' ? 'テープの長さ' : '修正液の容量', C.type === 'tape' ? C.tapeRemain : C.fluidRemain)}</div>`;
   } else if (t === 'ruler') { dyn = `<div class="setting-block"><p class="mini-note">${state.ruler ? 'ドラッグで始点→終点の直線を引く（鉛筆の状態で描く）。大きさは固定で、あまり透明じゃない定規。' : '文房具屋さんで定規を買うと使える。'}</p></div>`;
   } else if (t === 'compass') { dyn = `<div class="setting-block"><p class="mini-note">${state.compass ? '中心からドラッグした距離が半径。鉛筆をセットして使うタイプで、線は鉛筆の状態に依存する。' : '文房具屋さんでコンパスを買うと使える。'}</p></div>`;
   } else if (t === 'hand') { const piles = particles.filter(p => p.size >= 3).length; dyn = `<div class="setting-block"><p class="mini-note">消しカスをドラッグで動かせる。2つを同じ位置でこするとまとまって大きくなる。まとめた消しカスほど、ゴミ箱で高く換金できる（いま大きなまとまり ${piles} 個）。</p></div>`; }
   const stock = state.paperSize === 'カスタム' ? state.custom.stock : state.paperStock[state.paperSize];
   ins.innerHTML = `
-    <div class="panel-heading"><div><span class="eyebrow">CURRENT TOOL</span><h2>道具の設定 <span>✦</span></h2></div></div>
-    <div class="selected-card"><div class="selected-illustration">${M.icon}</div><div><span class="eyebrow">NOW USING</span><h3>${M.name}</h3><p>${M.sub}</p></div><span class="selected-check">✓</span></div>
+    <div class="panel-heading"><div><h2>道具の設定 <span>✦</span></h2></div></div>
+    <div class="selected-card"><div class="selected-illustration">${M.icon}</div><div><h3>${M.name}</h3><p>${M.sub}</p></div><span class="selected-check">✓</span></div>
     ${dyn}
     <div class="paper-card"><div class="paper-card-icon">▤</div><div><strong>紙のストック</strong><small>${state.paperSize}・残り</small></div><span><b>${stock}</b> 枚</span></div>
-    <div class="setting-block"><div class="setting-title"><span>次の紙</span><small>NEXT PAPER</small></div>${segs([...Object.keys(SIZES).map(s => [s, s, `${state.paperStock[s]}枚`]), ['カスタム', '指定', `${state.custom.stock}枚`]], state.nextSize, 'nextsize')}
+    <div class="setting-block"><div class="setting-title"><span>次の紙</span></div>${segs([...Object.keys(SIZES).map(s => [s, s, `${state.paperStock[s]}枚`]), ['カスタム', '指定', `${state.custom.stock}枚`]], state.nextSize, 'nextsize')}
     ${state.nextSize === 'カスタム' ? `<p class="mini-note">幅 <input id="cw" type="number" value="${state.custom.w}" style="width:56px"> mm × 高さ <input id="ch" type="number" value="${state.custom.h}" style="width:56px"> mm</p>` : ''}</div>
     <button class="new-paper" id="newPaperSide">＋ &nbsp; 新しい紙に取り替える</button>
     <div class="tip"><span>✦</span><p><strong>ちょっとしたヒント</strong><br>消しカスは「手で集める」で寄せて<br>ひとまとめにしてから捨てよう。</p></div>
