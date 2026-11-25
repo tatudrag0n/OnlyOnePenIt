@@ -21,4 +21,6 @@ python -m http.server 8000
 - 上部「文房具屋」で購入
 
 ## 公開
-GitHub Pages: https://tatudrag0n.github.io/OnlyOnePenIt/
+- 本番: https://onlyonepenit.mct-official.com/ （Cloudflare Workers、デプロイは `python3 ~/workspace/deploy-onlyonepenit.py`）
+- GitHub: https://github.com/tatudrag0n/OnlyOnePenIt
+- GitHub Pages: https://tatudrag0n.github.io/OnlyOnePenIt/
