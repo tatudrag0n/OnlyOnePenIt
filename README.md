@@ -25,3 +25,8 @@ python -m http.server 8000
 - 上部の「あそびかた」から操作方法を確認できます。タッチ操作にも対応しています。
 - 日本語表示用に Noto Sans JP の必要な文字のサブセットを同梱しています。ライセンスは `assets/fonts/LICENSE.txt` を参照してください。
 - 描画と消しカスの形・動きは実物をモデルにした近似表現で、物理シミュレーションそのものではありません。
+
+## 公開
+- 本番: https://onlyonepenit.mct-official.com/ （Cloudflare Workers、デプロイは `python3 ~/workspace/deploy-onlyonepenit.py`）
+- GitHub: https://github.com/tatudrag0n/OnlyOnePenIt
+- GitHub Pages: https://tatudrag0n.github.io/OnlyOnePenIt/
