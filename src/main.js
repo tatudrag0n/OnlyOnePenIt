@@ -39,7 +39,7 @@ const initial = () => ({
   bp: { color: '黒', stock: Object.fromEntries(Object.keys(BP_COLORS).map(k => [k, 0])), ink: Object.fromEntries(Object.keys(BP_COLORS).map(k => [k, 100])) },
   brush: { type: '太筆', paint: '赤', stock: { '太筆': 0, '細筆': 0, '平筆': 0 }, paints: { '赤': 0, '青': 0, '黄': 0, '白': 0 }, dip: 0, palette: false, bucket: false, mix: '#7a5aa0', dilute: false },
   corr: { type: 'tape', tapeStock: 0, tapeRemain: 100, fluidStock: 0, fluidRemain: 100 },
-  ruler: false, compass: false,
+  ruler: false, compass: false, sharpener: false,
 });
 let state = initial();
 let particles = [];
@@ -92,13 +92,13 @@ function renderInspector() {
   let dyn = '';
   if (t === 'pencil') { const P = state.pencil, cur = P.cur[P.hard], H = HARD[P.hard];
     dyn = `<div class="setting-block"><div class="setting-title"><span>芯の硬さ</span><small>HARDNESS</small></div>${segs(Object.keys(HARD).map(h => [h, h, `在庫 ${P.stock[h]}`, P.stock[h] <= 0]), P.hard, 'hard')}<p class="mini-note">硬いほど薄く長持ち、柔らかいほど濃く消耗が激しい。重ね描きで濃くなる。</p></div>
-    <div class="setting-block condition"><div class="setting-title"><span>鉛筆の状態</span><small>CONDITION</small></div>${bar('長さ', cur.length)}${bar('先の丸さ', 100 - cur.dull)}<p class="mini-note">${cur.dull >= 100 ? '先が丸くなりすぎて書けない。削ってね。' : cur.length <= 18 ? '短くなって線がブレやすくなっている。' : '使うほど先が太くなっていく。'}</p><button class="outline-button" id="maintain">✧ 鉛筆を削る（長さ消費）</button></div>`;
+    <div class="setting-block condition"><div class="setting-title"><span>鉛筆の状態</span><small>CONDITION</small></div>${bar('長さ', cur.length)}${bar('先の丸さ', 100 - cur.dull)}<p class="mini-note">${cur.dull >= 100 ? '先が丸くなりすぎて書けない。削ってね。' : cur.length <= 18 ? '短くなって線がブレやすくなっている。' : '使うほど先が太くなっていく。'}</p><button class="outline-button" id="maintain">✧ 鉛筆を削る${state.sharpener ? '（長さ消費）' : '（鉛筆削りが必要）'}</button></div>`;
   } else if (t === 'mech') { const Mc = state.mech;
     dyn = `<div class="setting-block"><div class="setting-title"><span>芯の種類</span><small>LEAD</small></div>${segs(Object.keys(HARD).map(h => [h, h, `替芯 ${Mc.leads[h]}`, false]), Mc.colorLead ? '' : Mc.hard, 'lead')}<div class="setting-title" style="margin-top:12px"><span>色つき芯</span><small>COLOR LEAD</small></div>${segs(Object.keys(LEAD_COLORS).map(c => [c, c, `替芯 ${Mc.colorLeads[c]}`, false]), Mc.colorLead || '', 'leadcolor')}<p class="mini-note">芯を変えるときは交換が必要（在庫から1本使う）。硬い芯は紙に跡が残りやすい。</p></div>
     <div class="setting-block condition"><div class="setting-title"><span>芯の状態</span><small>CONDITION</small></div>${bar('本体の芯', Mc.internal / 60 * 100)}<div class="condition-row"><span>出ている芯</span><strong>${Mc.exposed.toFixed(1)} mm</strong></div><p class="mini-note">${Mc.exposed < 0.1 ? '芯が出ていない。ノックしてね。' : Mc.exposed > 1 ? '出しすぎると折れやすい。' : 'ノックで芯を出す。本体の芯が尽きたら交換。'}</p><button class="outline-button" id="maintain">✧ ノックする</button><button class="outline-button" id="exchange">芯を交換する</button></div>`;
   } else if (t === 'coloredPencil') { const C = state.cp, cur = C.cur[C.color];
     dyn = `<div class="setting-block"><div class="setting-title"><span>色</span><small>COLOR</small></div>${segs(Object.keys(CP_COLORS).map(c => [c, c, `在庫 ${C.stock[c]}`, C.stock[c] <= 0]), C.color, 'cpcolor')}</div>
-    <div class="setting-block condition"><div class="setting-title"><span>色鉛筆の状態</span><small>CONDITION</small></div>${bar('長さ', cur.length)}${bar('先の丸さ', 100 - cur.dull)}<p class="mini-note">消すには色鉛筆用消しゴムが必要。鉛筆と同じく削れる。</p><button class="outline-button" id="maintain">✧ 色鉛筆を削る（長さ消費）</button></div>`;
+    <div class="setting-block condition"><div class="setting-title"><span>色鉛筆の状態</span><small>CONDITION</small></div>${bar('長さ', cur.length)}${bar('先の丸さ', 100 - cur.dull)}<p class="mini-note">消すには色鉛筆用消しゴムが必要。鉛筆と同じく削れる。</p><button class="outline-button" id="maintain">✧ 色鉛筆を削る${state.sharpener ? '（長さ消費）' : '（鉛筆削りが必要）'}</button></div>`;
   } else if (t === 'ballpoint') { const B = state.bp;
     dyn = `<div class="setting-block"><div class="setting-title"><span>色</span><small>COLOR</small></div>${segs(Object.keys(BP_COLORS).map(c => [c, c, `在庫 ${B.stock[c]}`, B.stock[c] <= 0]), B.color, 'bpcolor')}</div>
     <div class="setting-block condition"><div class="setting-title"><span>インク</span><small>INK</small></div>${bar('インクの残り', B.ink[B.color])}<p class="mini-note">消しゴムでは消えない。直すには修正テープ／修正液。インクが切れたら新しい1本に替わる（在庫が必要）。</p></div>`;
@@ -160,6 +160,7 @@ function bindInspector() {
   const tr = $('trash'); if (tr) tr.addEventListener('click', cashCrumbs);
 }
 function sharpenCur(cur, stock, key, label) {
+  if (!state.sharpener) { message('鉛筆削りがないと削れない。文房具屋さんで買ってね。'); return; }
   if (stock[key] <= 0) { message(`${label}がない。文房具屋さんで買ってね。`); return; }
   if (cur.length > 12) { cur.length -= 9; cur.dull = 0; message(`${label}を削った。先が鋭くなった（長さ消費）。`); }
   else { stock[key]--; if (stock[key] > 0) { cur.length = 100; cur.dull = 0; message(`短くなりすぎたので、新しい${label}に替えた。`); } else { cur.length = 0; cur.dull = 100; message(`${label}がなくなった。文房具屋さんで買ってね。`); } }
@@ -325,6 +326,7 @@ addItem('elec-unlock', '電動消しゴム（解放）', 200, 'dream', '範囲�
 addItem('elec-refill', '電動用替えゴム（10個）', 100, 'supply', '', '▰', 'eraser');
 addItem('battery', '電池セット（2本）', 100, 'supply', '電動消しゴム用。', '▭');
 addItem('ruler', '定規', 100, 'supply', '直線を引くための道具。', '▱');
+addItem('sharpener', '鉛筆削り', 100, 'supply', '鉛筆・色鉛筆を削るのに必要。これがないと削れない。', '✎');
 addItem('compass', 'コンパス', 200, 'supply', '鉛筆をセットして円を描く道具。', '◎');
 Object.keys(CP_COLORS).forEach(c => addItem('cp-' + c, `色鉛筆 ${c}`, 100, 'draw', '消すには色鉛筆用消しゴムが必要。', '✎', 'coloredPencil'));
 Object.keys(BP_COLORS).forEach(c => addItem('bp-' + c, `ボールペン ${c}`, 100, 'draw', '消しゴムでは消えない。修正テープ／液で直せる。', '✒', 'ballpoint'));
@@ -336,7 +338,7 @@ addItem('tape', '修正テープ', 100, 'supply', 'あらゆるものを覆え�
 addItem('fluid', '修正液', 200, 'supply', 'あらゆるものを覆える。少しベージュっぽくなる。', '▭');
 Object.keys(SIZES).forEach(s => addItem('paper-' + s, `紙 ${s}（100枚）`, 100, 'supply', '', '▤', 'paper'));
 addItem('paper-custom', '紙 指定サイズ（100枚）', 2000, 'supply', '好きな寸法（mm）で注文できる。', '▤', 'paper');
-const ONETIME = { 'pen-unlock': () => state.eraser.penUnlocked, 'elec-unlock': () => state.eraser.elecUnlocked, 'palette': () => state.brush.palette, 'bucket': () => state.brush.bucket, 'ruler': () => state.ruler, 'compass': () => state.compass };
+const ONETIME = { 'pen-unlock': () => state.eraser.penUnlocked, 'elec-unlock': () => state.eraser.elecUnlocked, 'palette': () => state.brush.palette, 'bucket': () => state.brush.bucket, 'ruler': () => state.ruler, 'compass': () => state.compass, 'sharpener': () => state.sharpener };
 function stockInfo(id) {
   const [k, v] = [id.slice(0, id.indexOf('-')), id.slice(id.indexOf('-') + 1)];
   if (k === 'pencil') return `在庫 ${state.pencil.stock[v]}`;
@@ -369,6 +371,7 @@ function applyItem(id) {
   else if (id === 'battery') state.eraser.batteries += 2;
   else if (id === 'ruler') state.ruler = true;
   else if (id === 'compass') state.compass = true;
+  else if (id === 'sharpener') state.sharpener = true;
   else if (k === 'cp') { state.cp.stock[v]++; const c = state.cp.cur[v]; if (c.length <= 4) { c.length = 100; c.dull = 0; } }
   else if (k === 'bp') { state.bp.stock[v]++; if (state.bp.ink[v] <= 0) state.bp.ink[v] = 100; }
   else if (k === 'brush') state.brush.stock[v]++;
