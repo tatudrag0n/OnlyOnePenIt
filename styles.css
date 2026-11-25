@@ -232,3 +232,29 @@ body{overflow:hidden}
   .toolbar{gap:0}
   .tool-list{gap:3px}
 }
+
+/* ==== de-slop: flat, square, tool-like (2026-11-26) ==== */
+body, h1, h2, h3, button, input { font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", sans-serif !important; }
+body { background: #f2f1ec; }
+.topbar { background: #fff; box-shadow: none; border-bottom: 1px solid #d9d6cc; }
+.brand-icon { border-radius: 3px; box-shadow: none; }
+.panel, .inspector { background: #fff; box-shadow: none; }
+.studio-head h1 { font-size: 18px; font-weight: 700; letter-spacing: 0; }
+.panel-heading h2, .inspector .panel-heading h2 { font-size: 15px; font-weight: 700; letter-spacing: 0; }
+.section-label, .setting-title { letter-spacing: 0; }
+.desk { background: #e8e6dd; box-shadow: none; border: 1px solid #d5d2c7; border-radius: 3px; }
+.paper-wrap { box-shadow: none; border: 1px solid #c9c6ba; }
+.canvas-shell { background: #fff; box-shadow: none; border: 1px solid #d9d6cc; border-radius: 3px; }
+.canvas-hint { border-radius: 3px; box-shadow: none; }
+.tool, .now-card, .mini-card, .paper-card, .setting-block, .selected-card, .shop-card, .shop-item, .basket-items, .wish-panel, .toolbox-note { border-radius: 3px !important; box-shadow: none !important; }
+button, .outline-button, .primary-button, .new-paper, .checkout, .guide-start, .shop-tabs button, .swatches button, .optrow button, .seg-btn, .qty button, .modal-close, .canvas-actions button { border-radius: 3px !important; box-shadow: none !important; }
+.modal-card { border-radius: 4px !important; box-shadow: 0 2px 10px rgba(30,30,20,.18) !important; }
+.tool { border: 1px solid #ddd9ce; background: #fff; }
+.tool.active { border-color: #3e5c43; background: #eef3ee; box-shadow: none; }
+.tool-icon { border-radius: 3px; }
+input[type="range"] { accent-color: #3e5c43; }
+.meter, .progress { border-radius: 2px; }
+.meter i, .progress i { border-radius: 2px; }
+.tag, .paper-badge, .saved { border-radius: 2px; }
+.shop-welcome { border-radius: 3px; box-shadow: none; }
+* { transition-duration: .05s !important; }
